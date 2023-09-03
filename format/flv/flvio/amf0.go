@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nareix/joy5/utils/bits/pio"
+	"github.com/jahanzaibi/joy5/utils/bits/pio"
 )
 
 type AMFParseError struct {
