@@ -65,9 +65,11 @@ func (w *Muxer) WriteFileHeader() (err error) {
 	}
 
 	var flags uint8
-	if w.HasVideo {
-		flags |= flvio.FILE_HAS_VIDEO
-	}
+	/*
+		if w.HasVideo {
+			flags |= flvio.FILE_HAS_VIDEO
+		}
+	*/
 	if w.HasAudio {
 		flags |= flvio.FILE_HAS_AUDIO
 	}
@@ -115,34 +117,34 @@ func WritePacket(pkt av.Packet, writeTag func(flvio.Tag) error, publishing bool)
 		tag.Time = uint32(flvio.TimeToTs(pkt.Time))
 		tag.Data = pkt.Data
 		return writeTag(tag)
+		/*
+			case av.H264DecoderConfig:
+				tag := flvio.Tag{
+					Type:          flvio.TAG_VIDEO,
+					FrameType:     flvio.FRAME_KEY,
+					AVCPacketType: flvio.AVC_SEQHDR,
+					VideoFormat:   flvio.VIDEO_H264,
+					Data:          pkt.Data,
+					Time:          uint32(flvio.TimeToTs(pkt.Time)),
+				}
+				return writeTag(tag)
 
-	case av.H264DecoderConfig:
-		tag := flvio.Tag{
-			Type:          flvio.TAG_VIDEO,
-			FrameType:     flvio.FRAME_KEY,
-			AVCPacketType: flvio.AVC_SEQHDR,
-			VideoFormat:   flvio.VIDEO_H264,
-			Data:          pkt.Data,
-			Time:          uint32(flvio.TimeToTs(pkt.Time)),
-		}
-		return writeTag(tag)
-
-	case av.H264:
-		tag := flvio.Tag{
-			Type:          flvio.TAG_VIDEO,
-			AVCPacketType: flvio.AVC_NALU,
-			VideoFormat:   flvio.VIDEO_H264,
-			CTime:         int32(flvio.TimeToTs(pkt.CTime)),
-		}
-		if pkt.IsKeyFrame {
-			tag.FrameType = flvio.FRAME_KEY
-		} else {
-			tag.FrameType = flvio.FRAME_INTER
-		}
-		tag.Time = uint32(flvio.TimeToTs(pkt.Time))
-		tag.Data = pkt.Data
-		return writeTag(tag)
-
+			case av.H264:
+				tag := flvio.Tag{
+					Type:          flvio.TAG_VIDEO,
+					AVCPacketType: flvio.AVC_NALU,
+					VideoFormat:   flvio.VIDEO_H264,
+					CTime:         int32(flvio.TimeToTs(pkt.CTime)),
+				}
+				if pkt.IsKeyFrame {
+					tag.FrameType = flvio.FRAME_KEY
+				} else {
+					tag.FrameType = flvio.FRAME_INTER
+				}
+				tag.Time = uint32(flvio.TimeToTs(pkt.Time))
+				tag.Data = pkt.Data
+				return writeTag(tag)
+		*/
 	case av.AACDecoderConfig:
 		tag := AACTagFromCodec(pkt.AAC)
 		tag.AACPacketType = flvio.AAC_SEQHDR
