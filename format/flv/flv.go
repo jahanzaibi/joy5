@@ -109,6 +109,7 @@ func AACTagFromCodec(aac *aac.Codec) flvio.Tag {
 	return tag
 }
 
+// test function later
 func WritePacket(pkt av.Packet, writeTag func(flvio.Tag) error, publishing bool) (err error) {
 	switch pkt.Type {
 	case av.AAC:
